@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { AuthProvider } from "@/contexts/auth-context"
+import { CartProvider } from "@/contexts/cart-context"
+import { FavoritesProvider } from "@/contexts/favorites-context"
 
 export const metadata: Metadata = {
   title: "TechStore - Loja de Informática",
@@ -28,7 +30,11 @@ html {
         `}</style>
       </head>
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <CartProvider>
+            <FavoritesProvider>{children}</FavoritesProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   )

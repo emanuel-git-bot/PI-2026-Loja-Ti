@@ -5,9 +5,11 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Monitor, Search, Menu } from "lucide-react"
+import { Monitor, Search, Menu, ShoppingCart, Heart } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import { useCart } from "@/contexts/cart-context"
+import { useFavorites } from "@/contexts/favorites-context"
 
 const navigation = [
   { name: "Início", href: "/loja" },
@@ -20,6 +22,9 @@ export function PublicHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
+
+  const { cart } = useCart()
+  const { favorites } = useFavorites()
 
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
@@ -53,6 +58,28 @@ export function PublicHeader() {
               <Search className="h-4 w-4" />
             </Button>
 
+            <Link href="/loja/favoritos">
+              <Button variant="ghost" size="sm" className="relative">
+                <Heart className="h-4 w-4" />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {favorites.length}
+                  </span>
+                )}
+              </Button>
+            </Link>
+
+            <Link href="/loja/carrinho">
+              <Button variant="ghost" size="sm" className="relative">
+                <ShoppingCart className="h-4 w-4" />
+                {cart.itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cart.itemCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
+
             <Link href="/admin">
               <Button variant="outline" size="sm">
                 Admin
@@ -81,6 +108,26 @@ export function PublicHeader() {
                       {item.name}
                     </Link>
                   ))}
+
+                  <div className="pt-4 border-t space-y-2">
+                    <Link
+                      href="/loja/favoritos"
+                      className="flex items-center text-lg font-medium text-gray-700 hover:text-blue-600"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Heart className="h-5 w-5 mr-2" />
+                      Favoritos ({favorites.length})
+                    </Link>
+                    <Link
+                      href="/loja/carrinho"
+                      className="flex items-center text-lg font-medium text-gray-700 hover:text-blue-600"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      Carrinho ({cart.itemCount})
+                    </Link>
+                  </div>
+
                   <div className="pt-4 border-t">
                     <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)}>
                       <Button className="w-full">Painel Admin</Button>

@@ -5,13 +5,29 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/auth-context"
-import { Monitor, Package, Tags, Settings, BarChart3, Users, Home, Store, LogOut, Menu, X } from "lucide-react"
+import {
+  Monitor,
+  Package,
+  Tags,
+  Settings,
+  BarChart3,
+  Users,
+  Home,
+  Store,
+  LogOut,
+  Menu,
+  X,
+  Percent,
+  ImageIcon,
+} from "lucide-react"
 import { useState } from "react"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: Home },
   { name: "Produtos", href: "/admin/products", icon: Package },
   { name: "Categorias", href: "/admin/categories", icon: Tags },
+  { name: "Ofertas", href: "/admin/deals", icon: Percent },
+  { name: "Banners", href: "/admin/banners", icon: ImageIcon },
   { name: "Serviços", href: "/admin/services", icon: Settings },
   { name: "Relatórios", href: "/admin/reports", icon: BarChart3 },
   { name: "Configurações", href: "/admin/settings", icon: Users },

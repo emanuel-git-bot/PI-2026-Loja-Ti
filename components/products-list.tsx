@@ -116,11 +116,12 @@ export function ProductsList() {
                 </Badge>
               </div>
             </CardHeader>
+
             <CardContent className="space-y-4">
-              {product.imageUrl && (
+              {product.imageUrls && product.imageUrls.length > 0 && (
                 <div className="aspect-video bg-gray-100 rounded-md overflow-hidden">
                   <img
-                    src={product.imageUrl || "/placeholder.svg"}
+                    src={product.imageUrls[0] || "/placeholder.svg"}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />

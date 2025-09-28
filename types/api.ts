@@ -38,7 +38,8 @@ export interface ApiProduct {
   price: number
   category_id: string
   category: ApiCategory
-  image_url?: string
+  image_urls: string[]
+  barcode?: string
   stock: number
   is_active: boolean
   created_at: string

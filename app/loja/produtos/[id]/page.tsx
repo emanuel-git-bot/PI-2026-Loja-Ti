@@ -6,16 +6,29 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useProducts } from "@/hooks/use-products"
-import { ArrowLeft, ShoppingCart, Share2 } from "lucide-react"
+import { useCart } from "@/contexts/cart-context"
+import { useFavorites } from "@/contexts/favorites-context"
+import { ArrowLeft, Share2, ShoppingCart, Heart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { ProductGallery } from "@/components/product-gallery"
+import { ReviewsSection } from "@/components/reviews-section"
+import { RelatedProducts } from "@/components/related-products"
+import { StarRating } from "@/components/star-rating"
+import { useReviews } from "@/hooks/use-reviews"
 
 export default function ProductDetailPage() {
   const params = useParams()
   const { products, categories } = useProducts()
+  const { addToCart, isInCart } = useCart()
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites()
+  const { getReviewStats } = useReviews()
   const { toast } = useToast()
 
   const product = products.find((p) => p.id === params.id)
   const category = product ? categories.find((c) => c.id === product.categoryId) : null
+  const reviewStats = product ? getReviewStats(product.id) : null
+
+  const images = product?.imageUrls?.length > 0 ? product.imageUrls : ["/computer-component.jpg"]
 
   const handleShare = () => {
     if (navigator.share) {
@@ -33,11 +46,32 @@ export default function ProductDetailPage() {
     }
   }
 
-  const handleConsultPrice = () => {
-    toast({
-      title: "Consulta enviada!",
-      description: "Entraremos em contato em breve com informações sobre este produto.",
-    })
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product)
+      toast({
+        title: "Produto adicionado!",
+        description: `${product.name} foi adicionado ao carrinho.`,
+      })
+    }
+  }
+
+  const handleToggleFavorite = () => {
+    if (product) {
+      if (isFavorite(product.id)) {
+        removeFromFavorites(product.id)
+        toast({
+          title: "Removido dos favoritos",
+          description: `${product.name} foi removido dos seus favoritos.`,
+        })
+      } else {
+        addToFavorites(product)
+        toast({
+          title: "Adicionado aos favoritos",
+          description: `${product.name} foi adicionado aos seus favoritos.`,
+        })
+      }
+    }
   }
 
   if (!product) {
@@ -77,17 +111,8 @@ export default function ProductDetailPage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Product Image */}
-          <div className="space-y-4">
-            <div className="aspect-square bg-white rounded-lg overflow-hidden shadow-sm">
-              <img
-                src={product.imageUrl || "/placeholder.svg?height=500&width=500&query=computer component"}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <ProductGallery images={images} productName={product.name} />
 
           {/* Product Info */}
           <div className="space-y-6">
@@ -96,6 +121,17 @@ export default function ProductDetailPage() {
                 {category?.name}
               </Badge>
               <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+              {product.barcode && <p className="text-sm text-gray-500 mb-2">Código: {product.barcode}</p>}
+
+              {reviewStats && reviewStats.totalReviews > 0 && (
+                <div className="flex items-center gap-2 mb-4">
+                  <StarRating rating={reviewStats.averageRating} />
+                  <span className="text-sm text-gray-600">
+                    ({reviewStats.totalReviews} avaliação{reviewStats.totalReviews !== 1 ? "ões" : ""})
+                  </span>
+                </div>
+              )}
+
               <p className="text-gray-600 text-lg">{product.description}</p>
             </div>
 
@@ -108,10 +144,15 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="space-y-4">
-              <Button size="lg" className="w-full" disabled={!product.inStock} onClick={handleConsultPrice}>
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                {product.inStock ? "Consultar Preço" : "Produto Indisponível"}
-              </Button>
+              <div className="flex gap-4">
+                <Button size="lg" className="flex-1" disabled={!product.inStock} onClick={handleAddToCart}>
+                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  {isInCart(product.id) ? "Já no Carrinho" : "Adicionar ao Carrinho"}
+                </Button>
+                <Button size="lg" variant="outline" onClick={handleToggleFavorite}>
+                  <Heart className={`h-5 w-5 ${isFavorite(product.id) ? "fill-red-500 text-red-500" : ""}`} />
+                </Button>
+              </div>
               <Link href="/loja/contato">
                 <Button size="lg" variant="outline" className="w-full bg-transparent">
                   Solicitar Orçamento
@@ -139,6 +180,12 @@ export default function ProductDetailPage() {
             )}
           </div>
         </div>
+
+        <div className="mb-12">
+          <ReviewsSection productId={product.id} />
+        </div>
+
+        <RelatedProducts currentProduct={product} />
       </div>
     </div>
   )

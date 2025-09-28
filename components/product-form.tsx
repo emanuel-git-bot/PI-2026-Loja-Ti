@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useProducts } from "@/hooks/use-products"
 import { useToast } from "@/hooks/use-toast"
+import { X, Plus } from "lucide-react"
 import type { Product } from "@/types"
 
 interface ProductFormProps {
@@ -28,7 +29,8 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
     description: product?.description || "",
     price: product?.price || 0,
     categoryId: product?.categoryId || "",
-    imageUrl: product?.imageUrl || "",
+    imageUrls: product?.imageUrls || [""],
+    barcode: product?.barcode || "",
     inStock: product?.inStock ?? true,
     specifications: product?.specifications || {},
   })
@@ -48,14 +50,21 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
       return
     }
 
+    const filteredImageUrls = formData.imageUrls.filter((url) => url.trim() !== "")
+
+    const productData = {
+      ...formData,
+      imageUrls: filteredImageUrls,
+    }
+
     if (product) {
-      updateProduct(product.id, formData)
+      updateProduct(product.id, productData)
       toast({
         title: "Produto atualizado!",
         description: "As alterações foram salvas com sucesso.",
       })
     } else {
-      addProduct(formData)
+      addProduct(productData)
       toast({
         title: "Produto adicionado!",
         description: "O produto foi cadastrado com sucesso.",
@@ -63,6 +72,27 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
     }
 
     onSuccess?.()
+  }
+
+  const addImageUrl = () => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrls: [...prev.imageUrls, ""],
+    }))
+  }
+
+  const removeImageUrl = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrls: prev.imageUrls.filter((_, i) => i !== index),
+    }))
+  }
+
+  const updateImageUrl = (index: number, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrls: prev.imageUrls.map((url, i) => (i === index ? value : url)),
+    }))
   }
 
   const addSpecification = () => {
@@ -122,6 +152,16 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="barcode">Código de Barras</Label>
+            <Input
+              id="barcode"
+              value={formData.barcode}
+              onChange={(e) => setFormData((prev) => ({ ...prev, barcode: e.target.value }))}
+              placeholder="Ex: 7891234567890"
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="category">Categoria *</Label>
             <Select
               value={formData.categoryId}
@@ -152,14 +192,38 @@ export function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) 
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="imageUrl">URL da Imagem</Label>
-            <Input
-              id="imageUrl"
-              value={formData.imageUrl}
-              onChange={(e) => setFormData((prev) => ({ ...prev, imageUrl: e.target.value }))}
-              placeholder="https://exemplo.com/imagem.jpg"
-            />
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>URLs das Imagens</Label>
+              <Button type="button" onClick={addImageUrl} variant="outline" size="sm">
+                <Plus className="w-4 h-4 mr-2" />
+                Adicionar Imagem
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              {formData.imageUrls.map((url, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    value={url}
+                    onChange={(e) => updateImageUrl(index, e.target.value)}
+                    placeholder={`URL da imagem ${index + 1}`}
+                    className="flex-1"
+                  />
+                  {formData.imageUrls.length > 1 && (
+                    <Button
+                      type="button"
+                      onClick={() => removeImageUrl(index)}
+                      variant="outline"
+                      size="sm"
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="flex items-center space-x-2">

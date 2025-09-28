@@ -36,7 +36,8 @@ const INITIAL_PRODUCTS: Product[] = [
     description: "Processador Intel Core i7 13ª geração",
     price: 2299.99,
     categoryId: "1",
-    imageUrl: "/intel-processor.png",
+    imageUrls: ["/intel-processor.png"],
+    barcode: "7891234567890",
     inStock: true,
     specifications: {
       Núcleos: "16",
@@ -53,7 +54,8 @@ const INITIAL_PRODUCTS: Product[] = [
     description: "Placa de vídeo NVIDIA GeForce RTX 4070",
     price: 3499.99,
     categoryId: "2",
-    imageUrl: "/nvidia-rtx-graphics-card.png",
+    imageUrls: ["/nvidia-rtx-graphics-card.png"],
+    barcode: "7891234567891",
     inStock: true,
     specifications: {
       Memória: "12GB GDDR6X",
