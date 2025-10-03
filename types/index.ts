@@ -129,3 +129,54 @@ export interface HeroBanner {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface Coupon {
+  id: string
+  code: string
+  description: string
+  discountType: "percentage" | "fixed"
+  discountValue: number
+  minPurchaseAmount: number
+  maxDiscountAmount?: number
+  startDate: Date
+  endDate: Date
+  usageLimit: number
+  usageCount: number
+  isActive: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface Order {
+  id: string
+  userId: string
+  userName: string
+  userEmail: string
+  items: CartItem[]
+  subtotal: number
+  discount: number
+  couponCode?: string
+  total: number
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+  paymentMethod: "mercadopago"
+  paymentStatus: "pending" | "approved" | "rejected"
+  paymentId?: string
+  shippingAddress: {
+    street: string
+    number: string
+    complement?: string
+    neighborhood: string
+    city: string
+    state: string
+    zipCode: string
+  }
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface OrderStatus {
+  status: Order["status"]
+  label: string
+  description: string
+  timestamp: Date
+}

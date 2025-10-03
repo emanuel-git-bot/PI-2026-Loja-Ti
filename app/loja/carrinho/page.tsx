@@ -7,11 +7,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/contexts/cart-context"
-import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react"
+import { useCoupons } from "@/hooks/use-coupons"
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, Tag, X } from "lucide-react"
+import { toast } from "sonner"
 
 export default function CarrinhoPage() {
-  const { cart, updateQuantity, removeFromCart, clearCart } = useCart()
-  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const {
+    cart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    appliedCoupon,
+    applyCoupon,
+    removeCoupon,
+    totalPrice,
+    discount,
+    finalPrice,
+  } = useCart()
+  const [couponCode, setCouponCode] = useState("")
+  const { validateCoupon } = useCoupons()
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity >= 1) {
@@ -20,13 +34,34 @@ export default function CarrinhoPage() {
   }
 
   const handleCheckout = () => {
-    setIsCheckingOut(true)
+    // setIsCheckingOut(true)
     // Simular processo de checkout
-    setTimeout(() => {
-      alert("Pedido realizado com sucesso! Entraremos em contato em breve.")
-      clearCart()
-      setIsCheckingOut(false)
-    }, 2000)
+    // setTimeout(() => {
+    //   alert("Pedido realizado com sucesso! Entraremos em contato em breve.")
+    //   clearCart()
+    //   setIsCheckingOut(false)
+    // }, 2000)
+  }
+
+  const handleApplyCoupon = () => {
+    if (!couponCode.trim()) {
+      toast.error("Digite um código de cupom")
+      return
+    }
+
+    const coupon = validateCoupon(couponCode, totalPrice)
+    if (coupon) {
+      applyCoupon(coupon)
+      toast.success(`Cupom ${coupon.code} aplicado com sucesso!`)
+      setCouponCode("")
+    } else {
+      toast.error("Cupom inválido ou expirado")
+    }
+  }
+
+  const handleRemoveCoupon = () => {
+    removeCoupon()
+    toast.success("Cupom removido")
   }
 
   if (cart.items.length === 0) {
@@ -140,12 +175,48 @@ export default function CarrinhoPage() {
                 <CardTitle>Resumo do Pedido</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Cupom de Desconto</label>
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
+                      <div className="flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-700">{appliedCoupon.code}</span>
+                      </div>
+                      <Button variant="ghost" size="sm" onClick={handleRemoveCoupon}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Digite o cupom"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                      />
+                      <Button onClick={handleApplyCoupon} variant="outline">
+                        Aplicar
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                <Separator />
+
                 <div className="flex justify-between">
                   <span>
                     Subtotal ({cart.itemCount} {cart.itemCount === 1 ? "item" : "itens"})
                   </span>
-                  <span>R$ {cart.total.toFixed(2).replace(".", ",")}</span>
+                  <span>R$ {totalPrice.toFixed(2).replace(".", ",")}</span>
                 </div>
+
+                {appliedCoupon && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Desconto ({appliedCoupon.code})</span>
+                    <span>- R$ {discount.toFixed(2).replace(".", ",")}</span>
+                  </div>
+                )}
 
                 <div className="flex justify-between">
                   <span>Frete</span>
@@ -156,12 +227,14 @@ export default function CarrinhoPage() {
 
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span>R$ {cart.total.toFixed(2).replace(".", ",")}</span>
+                  <span>R$ {finalPrice.toFixed(2).replace(".", ",")}</span>
                 </div>
 
-                <Button className="w-full" size="lg" onClick={handleCheckout} disabled={isCheckingOut}>
-                  {isCheckingOut ? "Processando..." : "Finalizar Pedido"}
-                </Button>
+                <Link href="/loja/checkout">
+                  <Button className="w-full" size="lg">
+                    Ir para Pagamento
+                  </Button>
+                </Link>
 
                 <Button variant="outline" className="w-full bg-transparent" onClick={clearCart}>
                   Limpar Carrinho

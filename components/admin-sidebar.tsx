@@ -19,6 +19,8 @@ import {
   X,
   Percent,
   ImageIcon,
+  Ticket,
+  ShoppingCart,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -27,6 +29,8 @@ const navigation = [
   { name: "Produtos", href: "/admin/products", icon: Package },
   { name: "Categorias", href: "/admin/categories", icon: Tags },
   { name: "Ofertas", href: "/admin/deals", icon: Percent },
+  { name: "Cupons", href: "/admin/coupons", icon: Ticket },
+  { name: "Pedidos", href: "/admin/orders", icon: ShoppingCart },
   { name: "Banners", href: "/admin/banners", icon: ImageIcon },
   { name: "Serviços", href: "/admin/services", icon: Settings },
   { name: "Relatórios", href: "/admin/reports", icon: BarChart3 },

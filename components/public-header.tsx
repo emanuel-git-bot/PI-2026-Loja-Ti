@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Monitor, Search, Menu, ShoppingCart, Heart } from "lucide-react"
+import { Monitor, Search, Menu, ShoppingCart, Heart, Package } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { useCart } from "@/contexts/cart-context"
@@ -57,6 +57,12 @@ export function PublicHeader() {
             <Button variant="ghost" size="sm" onClick={() => setIsSearchOpen(!isSearchOpen)} className="hidden sm:flex">
               <Search className="h-4 w-4" />
             </Button>
+
+            <Link href="/loja/pedidos">
+              <Button variant="ghost" size="sm" className="hidden sm:flex">
+                <Package className="h-4 w-4" />
+              </Button>
+            </Link>
 
             <Link href="/loja/favoritos">
               <Button variant="ghost" size="sm" className="relative">
@@ -110,6 +116,14 @@ export function PublicHeader() {
                   ))}
 
                   <div className="pt-4 border-t space-y-2">
+                    <Link
+                      href="/loja/pedidos"
+                      className="flex items-center text-lg font-medium text-gray-700 hover:text-blue-600"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Package className="h-5 w-5 mr-2" />
+                      Meus Pedidos
+                    </Link>
                     <Link
                       href="/loja/favoritos"
                       className="flex items-center text-lg font-medium text-gray-700 hover:text-blue-600"

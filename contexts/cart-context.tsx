@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import type { Cart, CartItem, CartContextType, Product } from "@/types"
+import type { Cart, CartItem, CartContextType, Product, Coupon } from "@/types"
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
@@ -14,6 +14,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     total: 0,
     itemCount: 0,
   })
+  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null)
 
   // Carregar carrinho do localStorage
   useEffect(() => {
@@ -100,6 +101,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return cart.items.find((item) => item.productId === productId)
   }
 
+  const calculateDiscount = (total: number, coupon: Coupon | null) => {
+    if (!coupon) return 0
+    if (coupon.discountType === "percentage") {
+      return (total * coupon.discountValue) / 100
+    }
+    return coupon.discountValue
+  }
+
+  const discount = calculateDiscount(cart.total, appliedCoupon)
+  const finalPrice = Math.max(0, cart.total - discount)
+
+  const applyCoupon = (coupon: Coupon) => {
+    setAppliedCoupon(coupon)
+  }
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null)
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -110,6 +130,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         isInCart,
         getCartItem,
+        appliedCoupon,
+        applyCoupon,
+        removeCoupon,
+        totalPrice: cart.total,
+        discount,
+        finalPrice,
+        items: cart.items,
       }}
     >
       {children}
