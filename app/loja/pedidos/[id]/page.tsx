@@ -139,7 +139,7 @@ export default function DetalhePedidoPage() {
                   <div className="flex-1">
                     <p className="font-medium">{item.productName}</p>
                     <p className="text-sm text-muted-foreground">Quantidade: {item.quantity}</p>
-                    <p className="font-semibold mt-1">R$ {((item.price ?? 0) * item.quantity).toFixed(2)}</p>
+                    <p className="font-semibold mt-1">R$ {(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -168,14 +168,14 @@ export default function DetalhePedidoPage() {
                   </div>
                   <div className="flex justify-between text-sm text-success">
                     <span>Desconto</span>
-                    <span>- R$ {(order.discount ?? 0).toFixed(2)}</span>
+                    <span>- R$ {order.discount?.toFixed(2)}</span>
                   </div>
                 </>
               )}
               <Separator />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>R$ {(order.totalAmount ?? 0).toFixed(2)}</span>
+                <span>R$ {order.totalAmount.toFixed(2)}</span>
               </div>
             </div>
           </Card>
