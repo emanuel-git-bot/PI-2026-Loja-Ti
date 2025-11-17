@@ -12,7 +12,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'recharts', 'date-fns'],
   },
-  swcMinify: true,
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
