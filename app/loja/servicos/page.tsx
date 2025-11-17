@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { ServiceCard } from "@/components/service-card"
 import { useServices } from "@/hooks/use-services"
-import { Search } from "lucide-react"
+import { Search } from 'lucide-react'
 
 export default function ServicosPage() {
   const { services } = useServices()
@@ -20,17 +20,17 @@ export default function ServicosPage() {
   )
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Nossos Serviços</h1>
-          <p className="text-gray-600">Assistência técnica especializada e serviços de qualidade</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Nossos Serviços</h1>
+          <p className="text-gray-600 dark:text-gray-400">Assistência técnica especializada e serviços de qualidade</p>
         </div>
 
         {/* Search */}
         <div className="mb-8">
           <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
             <Input
               placeholder="Buscar serviços..."
               value={searchTerm}
@@ -50,7 +50,7 @@ export default function ServicosPage() {
         {filteredServices.length === 0 && (
           <Card>
             <CardContent className="text-center py-12">
-              <p className="text-gray-500 text-lg">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">
                 {searchTerm ? "Nenhum serviço encontrado para sua busca." : "Nenhum serviço disponível no momento."}
               </p>
             </CardContent>

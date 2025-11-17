@@ -130,16 +130,16 @@ export default function DetalhePedidoPage() {
                     {item.imageUrl && (
                       <Image
                         src={item.imageUrl || "/placeholder.svg"}
-                        alt={item.productName}
+                        alt={item.productName || "Produto"}
                         fill
                         className="object-cover"
                       />
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium">{item.productName}</p>
+                    <p className="font-medium">{item.productName || "Produto sem nome"}</p>
                     <p className="text-sm text-muted-foreground">Quantidade: {item.quantity}</p>
-                    <p className="font-semibold mt-1">R$ {(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-semibold mt-1">R$ {((item.price ?? 0) * item.quantity).toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -168,14 +168,14 @@ export default function DetalhePedidoPage() {
                   </div>
                   <div className="flex justify-between text-sm text-success">
                     <span>Desconto</span>
-                    <span>- R$ {order.discount?.toFixed(2)}</span>
+                    <span>- R$ {(order.discount ?? 0).toFixed(2)}</span>
                   </div>
                 </>
               )}
               <Separator />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>R$ {order.totalAmount.toFixed(2)}</span>
+                <span>R$ {(order.totalAmount ?? 0).toFixed(2)}</span>
               </div>
             </div>
           </Card>
@@ -187,12 +187,12 @@ export default function DetalhePedidoPage() {
               Entrega
             </h2>
             <div className="text-sm space-y-1">
-              <p className="font-medium">{order.customerInfo.name}</p>
-              <p className="text-muted-foreground">{order.shippingAddress.street}</p>
+              <p className="font-medium">{order.customerInfo?.name || "Nome não informado"}</p>
+              <p className="text-muted-foreground">{order.shippingAddress?.street || "Endereço não informado"}</p>
               <p className="text-muted-foreground">
-                {order.shippingAddress.city} - {order.shippingAddress.state}
+                {order.shippingAddress?.city || "Cidade"} - {order.shippingAddress?.state || "Estado"}
               </p>
-              <p className="text-muted-foreground">CEP: {order.shippingAddress.zipCode}</p>
+              <p className="text-muted-foreground">CEP: {order.shippingAddress?.zipCode || "CEP não informado"}</p>
             </div>
           </Card>
         </div>

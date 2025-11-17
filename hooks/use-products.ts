@@ -47,6 +47,7 @@ const INITIAL_PRODUCTS: Product[] = [
     },
     createdAt: new Date(),
     updatedAt: new Date(),
+    featured: false,
   },
   {
     id: "2",
@@ -65,6 +66,7 @@ const INITIAL_PRODUCTS: Product[] = [
     },
     createdAt: new Date(),
     updatedAt: new Date(),
+    featured: false,
   },
 ]
 
@@ -78,6 +80,7 @@ export function useProducts() {
       id: Date.now().toString(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      featured: false,
     }
     setProducts((prev) => [...prev, newProduct])
   }
@@ -90,6 +93,14 @@ export function useProducts() {
 
   const deleteProduct = (id: string) => {
     setProducts((prev) => prev.filter((product) => product.id !== id))
+  }
+
+  const toggleFeatured = (id: string) => {
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.id === id ? { ...product, featured: !product.featured, updatedAt: new Date() } : product,
+      ),
+    )
   }
 
   const addCategory = (category: Omit<Category, "id" | "createdAt">) => {
@@ -117,6 +128,7 @@ export function useProducts() {
     addProduct,
     updateProduct,
     deleteProduct,
+    toggleFeatured,
     addCategory,
     updateCategory,
     deleteCategory,

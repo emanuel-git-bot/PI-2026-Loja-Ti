@@ -1,6 +1,7 @@
 import type React from "react"
 import { PublicHeader } from "@/components/public-header"
 import { PublicFooter } from "@/components/public-footer"
+import { FloatingChatButton } from "@/components/floating-chat-button"
 
 export default function LojaLayout({
   children,
@@ -12,6 +13,7 @@ export default function LojaLayout({
       <PublicHeader />
       <main className="flex-1">{children}</main>
       <PublicFooter />
+      <FloatingChatButton />
     </div>
   )
 }

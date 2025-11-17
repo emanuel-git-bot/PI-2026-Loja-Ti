@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useServices } from "@/hooks/use-services"
-import { ArrowRight, Wrench, Monitor, Cpu, HardDrive, Zap, Shield, Clock, DollarSign, CheckCircle } from "lucide-react"
+import { useRouter } from 'next/navigation'
+import { ArrowRight, Wrench, Monitor, Cpu, HardDrive, Zap, Shield, Clock, DollarSign, CheckCircle } from 'lucide-react'
 import type { Service } from "@/types"
 
 const serviceIcons = {
@@ -24,13 +25,14 @@ const getServiceIcon = (serviceName: string) => {
 
 interface EnhancedServiceCardProps {
   service: Service
+  onRequestQuote: (service: Service) => void
 }
 
-function EnhancedServiceCard({ service }: EnhancedServiceCardProps) {
+function EnhancedServiceCard({ service, onRequestQuote }: EnhancedServiceCardProps) {
   const IconComponent = getServiceIcon(service.name)
 
   return (
-    <Card className="group relative overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-white/90 backdrop-blur-sm">
+    <Card className="group relative overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
       {/* Service Image Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 group-hover:from-primary/10 group-hover:to-primary/20 transition-all duration-300" />
 
@@ -85,6 +87,7 @@ function EnhancedServiceCard({ service }: EnhancedServiceCardProps) {
           className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
           variant={service.available ? "default" : "secondary"}
           disabled={!service.available}
+          onClick={() => onRequestQuote(service)}
         >
           {service.available ? "Solicitar Orçamento" : "Indisponível"}
           {service.available && <ArrowRight className="h-4 w-4 ml-2" />}
@@ -96,7 +99,19 @@ function EnhancedServiceCard({ service }: EnhancedServiceCardProps) {
 
 export function EnhancedServicesSection() {
   const { services } = useServices()
+  const router = useRouter()
   const featuredServices = services.filter((service) => service.available).slice(0, 3)
+
+  const handleRequestQuote = (service?: Service) => {
+    if (service) {
+      router.push(
+        `/loja/contato?servico=${encodeURIComponent(service.name)}&servicoId=${service.id}&preco=${service.price}`
+      )
+    } else {
+      // Solicitar orçamento genérico
+      router.push(`/loja/contato?servico=Orçamento Personalizado`)
+    }
+  }
 
   return (
     <section className="relative py-16 overflow-hidden">
@@ -125,13 +140,13 @@ export function EnhancedServicesSection() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {featuredServices.map((service) => (
-            <EnhancedServiceCard key={service.id} service={service} />
+            <EnhancedServiceCard key={service.id} service={service} onRequestQuote={handleRequestQuote} />
           ))}
         </div>
 
         {/* Call to Action */}
         <div className="text-center">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-border/50">
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-border/50">
             <h3 className="text-2xl font-bold text-foreground mb-4">Precisa de um serviço personalizado?</h3>
             <p className="text-muted-foreground mb-6">
               Nossa equipe está pronta para atender suas necessidades específicas com soluções sob medida
@@ -143,7 +158,12 @@ export function EnhancedServicesSection() {
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="min-w-[200px] bg-transparent">
+              <Button
+                size="lg"
+                variant="outline"
+                className="min-w-[200px] bg-transparent"
+                onClick={() => handleRequestQuote()}
+              >
                 Solicitar Orçamento
               </Button>
             </div>

@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useCart } from "@/contexts/cart-context"
 import { useAuth } from "@/contexts/auth-context"
+import { useUserProfile } from "@/hooks/use-user-profile"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import { CreditCard, Smartphone, Barcode, CheckCircle2, Tag } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useOrders } from "@/hooks/use-orders"
@@ -20,6 +21,7 @@ import Image from "next/image"
 export default function CheckoutPage() {
   const { items, totalPrice, appliedCoupon, discount, finalPrice, clearCart, removeCoupon } = useCart()
   const { user } = useAuth()
+  const { profile } = useUserProfile(user?.id)
   const router = useRouter()
   const { createOrder } = useOrders()
 
@@ -42,6 +44,22 @@ export default function CheckoutPage() {
     cardCvv: "",
   })
 
+  useEffect(() => {
+    if (profile) {
+      setFormData((prev) => ({
+        ...prev,
+        name: profile.name,
+        email: profile.email,
+        phone: profile.phone,
+        cpf: profile.cpf,
+        address: `${profile.address.street}, ${profile.address.number}${profile.address.complement ? ` - ${profile.address.complement}` : ""}`,
+        city: profile.address.city,
+        state: profile.address.state,
+        zipCode: profile.address.zipCode,
+      }))
+    }
+  }, [profile])
+
   if (items.length === 0 && !paymentSuccess) {
     router.push("/loja/carrinho")
     return null
@@ -54,14 +72,13 @@ export default function CheckoutPage() {
   const handlePayment = async () => {
     setIsProcessing(true)
 
-    // Simular processamento de pagamento
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
     const order = createOrder({
       userId: user?.id || "guest",
       userName: formData.name,
       userEmail: formData.email,
-      items: items, // Passar os items do carrinho diretamente, que já têm o formato correto
+      items: items,
       subtotal: totalPrice,
       discount: discount,
       couponCode: appliedCoupon?.code,
@@ -71,9 +88,9 @@ export default function CheckoutPage() {
       paymentStatus: "approved",
       shippingAddress: {
         street: formData.address,
-        number: "S/N", // Adicionar número padrão
+        number: "S/N",
         complement: "",
-        neighborhood: "Centro", // Adicionar bairro padrão
+        neighborhood: profile?.address.neighborhood || "Centro",
         city: formData.city,
         state: formData.state,
         zipCode: formData.zipCode,

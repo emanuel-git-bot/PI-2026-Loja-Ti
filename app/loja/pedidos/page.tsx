@@ -28,8 +28,9 @@ export default function MeusPedidosPage() {
     return null
   }
 
-  // Filtrar pedidos do usuário (em produção, isso viria da API)
-  const userOrders = orders.filter((order) => order.customerInfo.email === user.email)
+  const userOrders = orders.filter(
+    (order) => order.customerInfo?.email === user.email || order.userEmail === user.email,
+  )
 
   if (userOrders.length === 0) {
     return (
@@ -77,19 +78,19 @@ export default function MeusPedidosPage() {
                 {order.items.map((item, index) => (
                   <div key={index} className="flex gap-3">
                     <div className="relative w-16 h-16 rounded-md overflow-hidden bg-muted flex-shrink-0">
-                      {item.imageUrl && (
+                      {(item.imageUrl || item.product?.imageUrls?.[0]) && (
                         <Image
-                          src={item.imageUrl || "/placeholder.svg"}
-                          alt={item.productName}
+                          src={item.imageUrl || item.product?.imageUrls?.[0] || "/placeholder.svg"}
+                          alt={item.productName || item.product?.name || "Produto"}
                           fill
                           className="object-cover"
                         />
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium">{item.productName}</p>
+                      <p className="font-medium">{item.productName || item.product?.name || "Produto"}</p>
                       <p className="text-sm text-muted-foreground">
-                        Quantidade: {item.quantity} • R$ {item.price.toFixed(2)}
+                        Quantidade: {item.quantity} • R$ {(item.price ?? item.product?.price ?? 0).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -99,7 +100,7 @@ export default function MeusPedidosPage() {
               <div className="flex items-center justify-between pt-4 border-t">
                 <div>
                   <p className="text-sm text-muted-foreground">Total</p>
-                  <p className="text-xl font-bold">R$ {order.totalAmount.toFixed(2)}</p>
+                  <p className="text-xl font-bold">R$ {(order.totalAmount ?? order.total ?? 0).toFixed(2)}</p>
                 </div>
                 <Link href={`/loja/pedidos/${order.id}`}>
                   <Button variant="outline">Ver Detalhes</Button>

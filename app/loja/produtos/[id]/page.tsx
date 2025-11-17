@@ -76,12 +76,14 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Card>
             <CardContent className="text-center py-12">
-              <h1 className="text-2xl font-bold mb-4">Produto não encontrado</h1>
-              <p className="text-gray-600 mb-6">O produto que você está procurando não existe ou foi removido.</p>
+              <h1 className="text-2xl font-bold dark:text-white mb-4">Produto não encontrado</h1>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                O produto que você está procurando não existe ou foi removido.
+              </p>
               <Link href="/loja/produtos">
                 <Button>
                   <ArrowLeft className="h-4 w-4 mr-2" />
@@ -96,7 +98,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6 flex items-center justify-between">
           <Link href="/loja/produtos">
@@ -120,22 +122,26 @@ export default function ProductDetailPage() {
               <Badge variant="secondary" className="mb-2">
                 {category?.name}
               </Badge>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
-              {product.barcode && <p className="text-sm text-gray-500 mb-2">Código: {product.barcode}</p>}
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{product.name}</h1>
+              {product.barcode && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Código: {product.barcode}</p>
+              )}
 
               {reviewStats && reviewStats.totalReviews > 0 && (
                 <div className="flex items-center gap-2 mb-4">
                   <StarRating rating={reviewStats.averageRating} />
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     ({reviewStats.totalReviews} avaliação{reviewStats.totalReviews !== 1 ? "ões" : ""})
                   </span>
                 </div>
               )}
 
-              <p className="text-gray-600 text-lg">{product.description}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-lg">{product.description}</p>
             </div>
 
-            <div className="text-4xl font-bold text-green-600">R$ {product.price.toFixed(2).replace(".", ",")}</div>
+            <div className="text-4xl font-bold text-green-600 dark:text-green-400">
+              R$ {product.price.toFixed(2).replace(".", ",")}
+            </div>
 
             <div className="flex items-center space-x-4">
               <Badge variant={product.inStock ? "default" : "destructive"}>
@@ -169,9 +175,12 @@ export default function ProductDetailPage() {
                 <CardContent>
                   <div className="space-y-3">
                     {Object.entries(product.specifications).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-center border-b border-gray-100 pb-2">
-                        <span className="font-medium text-gray-700">{key}</span>
-                        <span className="text-gray-600">{value}</span>
+                      <div
+                        key={key}
+                        className="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2"
+                      >
+                        <span className="font-medium text-gray-700 dark:text-gray-300">{key}</span>
+                        <span className="text-gray-600 dark:text-gray-400">{value}</span>
                       </div>
                     ))}
                   </div>

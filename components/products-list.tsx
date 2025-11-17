@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { useProducts } from "@/hooks/use-products"
 import { useToast } from "@/hooks/use-toast"
 import { ProductForm } from "./product-form"
-import { Edit, Trash2, Plus, Search } from "lucide-react"
+import { Edit, Trash2, Plus, Search, Star } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 export function ProductsList() {
-  const { products, categories, deleteProduct } = useProducts()
+  const { products, categories, deleteProduct, toggleFeatured } = useProducts()
   const { toast } = useToast()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -49,6 +49,16 @@ export function ProductsList() {
     toast({
       title: "Produto excluído!",
       description: "O produto foi removido com sucesso.",
+    })
+  }
+
+  const handleToggleFeatured = (productId: string, currentFeatured: boolean) => {
+    toggleFeatured(productId)
+    toast({
+      title: currentFeatured ? "Produto removido dos destaques" : "Produto adicionado aos destaques",
+      description: currentFeatured
+        ? "O produto não aparecerá mais na seção de destaques."
+        : "O produto agora aparecerá na seção de destaques.",
     })
   }
 
@@ -164,6 +174,15 @@ export function ProductsList() {
                     <ProductForm product={product} onSuccess={() => setEditingProduct(null)} />
                   </DialogContent>
                 </Dialog>
+
+                <Button
+                  variant={product.featured ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleToggleFeatured(product.id, product.featured || false)}
+                  className={product.featured ? "bg-yellow-500 hover:bg-yellow-600" : ""}
+                >
+                  <Star className={`h-4 w-4 ${product.featured ? "fill-current" : ""}`} />
+                </Button>
 
                 <AlertDialog>
                   <AlertDialogTrigger asChild>

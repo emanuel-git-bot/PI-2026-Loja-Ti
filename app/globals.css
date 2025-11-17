@@ -4,87 +4,112 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.99 0.005 106.423);
-  --foreground: oklch(0.15 0.01 258.338);
+  /* Aplicando tema laranja - backgrounds e foregrounds */
+  --background: oklch(0.99 0.005 85);
+  --foreground: oklch(0.15 0.01 30);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.01 258.338);
+  --card-foreground: oklch(0.15 0.01 30);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.01 258.338);
-  --primary: oklch(0.47 0.13 258.338);
-  --primary-foreground: oklch(0.99 0.005 106.423);
-  --secondary: oklch(0.96 0.015 106.423);
-  --secondary-foreground: oklch(0.15 0.01 258.338);
-  --muted: oklch(0.96 0.015 106.423);
-  --muted-foreground: oklch(0.45 0.02 258.338);
-  --accent: oklch(0.94 0.025 106.423);
-  --accent-foreground: oklch(0.15 0.01 258.338);
+  --popover-foreground: oklch(0.15 0.01 30);
+
+  /* Cor primária laranja vibrante */
+  --primary: oklch(0.62 0.19 35);
+  --primary-foreground: oklch(0.99 0.005 85);
+
+  /* Cores secundárias em tons de laranja claro */
+  --secondary: oklch(0.96 0.02 40);
+  --secondary-foreground: oklch(0.15 0.01 30);
+  --muted: oklch(0.96 0.015 40);
+  --muted-foreground: oklch(0.45 0.02 30);
+  --accent: oklch(0.94 0.03 38);
+  --accent-foreground: oklch(0.15 0.01 30);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.99 0.005 106.423);
-  --border: oklch(0.92 0.02 106.423);
-  --input: oklch(0.92 0.02 106.423);
-  --ring: oklch(0.47 0.13 258.338);
+  --destructive-foreground: oklch(0.99 0.005 85);
+
+  /* Bordas e inputs em tons de laranja suave */
+  --border: oklch(0.92 0.02 40);
+  --input: oklch(0.92 0.02 40);
+  --ring: oklch(0.62 0.19 35);
+
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.5rem;
-  --sidebar: oklch(0.99 0.005 106.423);
-  --sidebar-foreground: oklch(0.15 0.01 258.338);
-  --sidebar-primary: oklch(0.47 0.13 258.338);
-  --sidebar-primary-foreground: oklch(0.99 0.005 106.423);
-  --sidebar-accent: oklch(0.96 0.015 106.423);
-  --sidebar-accent-foreground: oklch(0.15 0.01 258.338);
-  --sidebar-border: oklch(0.92 0.02 106.423);
-  --sidebar-ring: oklch(0.47 0.13 258.338);
+
+  /* Sidebar com tema laranja */
+  --sidebar: oklch(0.99 0.005 85);
+  --sidebar-foreground: oklch(0.15 0.01 30);
+  --sidebar-primary: oklch(0.62 0.19 35);
+  --sidebar-primary-foreground: oklch(0.99 0.005 85);
+  --sidebar-accent: oklch(0.96 0.02 40);
+  --sidebar-accent-foreground: oklch(0.15 0.01 30);
+  --sidebar-border: oklch(0.92 0.02 40);
+  --sidebar-ring: oklch(0.62 0.19 35);
 
   --success: oklch(0.55 0.15 142.495);
-  --success-foreground: oklch(0.99 0.005 106.423);
+  --success-foreground: oklch(0.99 0.005 85);
   --warning: oklch(0.75 0.15 85.873);
-  --warning-foreground: oklch(0.15 0.01 258.338);
+  --warning-foreground: oklch(0.15 0.01 30);
   --info: oklch(0.55 0.15 258.338);
-  --info-foreground: oklch(0.99 0.005 106.423);
-  --promotion: oklch(0.65 0.2 27.325);
-  --promotion-foreground: oklch(0.99 0.005 106.423);
+  --info-foreground: oklch(0.99 0.005 85);
+
+  /* Cor de promoção em laranja intenso */
+  --promotion: oklch(0.65 0.22 32);
+  --promotion-foreground: oklch(0.99 0.005 85);
 }
 
+/* Dark mode com tema laranja escuro */
 .dark {
-  --background: oklch(0.08 0.005 258.338);
-  --foreground: oklch(0.95 0.01 106.423);
-  --card: oklch(0.1 0.005 258.338);
-  --card-foreground: oklch(0.95 0.01 106.423);
-  --popover: oklch(0.1 0.005 258.338);
-  --popover-foreground: oklch(0.95 0.01 106.423);
-  --primary: oklch(0.65 0.15 258.338);
-  --primary-foreground: oklch(0.08 0.005 258.338);
-  --secondary: oklch(0.15 0.01 258.338);
-  --secondary-foreground: oklch(0.95 0.01 106.423);
-  --muted: oklch(0.15 0.01 258.338);
-  --muted-foreground: oklch(0.65 0.02 106.423);
-  --accent: oklch(0.18 0.015 258.338);
-  --accent-foreground: oklch(0.95 0.01 106.423);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.95 0.01 106.423);
-  --border: oklch(0.18 0.015 258.338);
-  --input: oklch(0.18 0.015 258.338);
-  --ring: oklch(0.65 0.15 258.338);
-  --sidebar: oklch(0.08 0.005 258.338);
-  --sidebar-foreground: oklch(0.95 0.01 106.423);
-  --sidebar-primary: oklch(0.65 0.15 258.338);
-  --sidebar-primary-foreground: oklch(0.08 0.005 258.338);
-  --sidebar-accent: oklch(0.15 0.01 258.338);
-  --sidebar-accent-foreground: oklch(0.95 0.01 106.423);
-  --sidebar-border: oklch(0.18 0.015 258.338);
-  --sidebar-ring: oklch(0.65 0.15 258.338);
+  --background: oklch(0.12 0.01 30);
+  --foreground: oklch(0.98 0.005 85);
+  --card: oklch(0.15 0.01 30);
+  --card-foreground: oklch(0.98 0.005 85);
+  --popover: oklch(0.15 0.01 30);
+  --popover-foreground: oklch(0.98 0.005 85);
 
-  --success: oklch(0.6 0.15 142.495);
-  --success-foreground: oklch(0.08 0.005 258.338);
-  --warning: oklch(0.8 0.15 85.873);
-  --warning-foreground: oklch(0.08 0.005 258.338);
-  --info: oklch(0.65 0.15 258.338);
-  --info-foreground: oklch(0.08 0.005 258.338);
-  --promotion: oklch(0.7 0.2 27.325);
-  --promotion-foreground: oklch(0.08 0.005 258.338);
+  /* Cor primária laranja mais clara para dark mode */
+  --primary: oklch(0.72 0.18 38);
+  --primary-foreground: oklch(0.12 0.01 30);
+
+  /* Cores secundárias escuras com toque de laranja */
+  --secondary: oklch(0.2 0.02 35);
+  --secondary-foreground: oklch(0.98 0.005 85);
+  --muted: oklch(0.2 0.015 35);
+  --muted-foreground: oklch(0.7 0.02 85);
+  --accent: oklch(0.25 0.03 38);
+  --accent-foreground: oklch(0.98 0.005 85);
+
+  --destructive: oklch(0.65 0.25 27.325);
+  --destructive-foreground: oklch(0.98 0.005 85);
+
+  /* Bordas e inputs escuros com toque de laranja */
+  --border: oklch(0.25 0.02 35);
+  --input: oklch(0.2 0.015 35);
+  --ring: oklch(0.72 0.18 38);
+
+  /* Sidebar dark com tema laranja */
+  --sidebar: oklch(0.1 0.01 30);
+  --sidebar-foreground: oklch(0.98 0.005 85);
+  --sidebar-primary: oklch(0.72 0.18 38);
+  --sidebar-primary-foreground: oklch(0.12 0.01 30);
+  --sidebar-accent: oklch(0.2 0.02 35);
+  --sidebar-accent-foreground: oklch(0.98 0.005 85);
+  --sidebar-border: oklch(0.25 0.02 35);
+  --sidebar-ring: oklch(0.72 0.18 38);
+
+  --success: oklch(0.65 0.18 142.495);
+  --success-foreground: oklch(0.98 0.005 85);
+  --warning: oklch(0.75 0.18 85.873);
+  --warning-foreground: oklch(0.12 0.01 30);
+  --info: oklch(0.7 0.18 258.338);
+  --info-foreground: oklch(0.98 0.005 85);
+
+  /* Promoção em laranja vibrante para dark mode */
+  --promotion: oklch(0.7 0.22 35);
+  --promotion-foreground: oklch(0.98 0.005 85);
 }
 
 @theme inline {

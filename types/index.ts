@@ -6,6 +6,26 @@ export interface User {
   createdAt: Date
 }
 
+export interface UserProfile {
+  id: string
+  userId: string
+  name: string
+  email: string
+  phone: string
+  cpf: string
+  address: {
+    street: string
+    number: string
+    complement?: string
+    neighborhood: string
+    city: string
+    state: string
+    zipCode: string
+  }
+  createdAt: Date
+  updatedAt: Date
+}
+
 export interface Category {
   id: string
   name: string
@@ -22,6 +42,7 @@ export interface Product {
   imageUrls: string[]
   barcode?: string
   inStock: boolean
+  featured?: boolean // adicionando campo featured para marcar produtos em destaque
   specifications: Record<string, string>
   createdAt: Date
   updatedAt: Date
@@ -179,4 +200,81 @@ export interface OrderStatus {
   label: string
   description: string
   timestamp: Date
+}
+
+export interface ServiceOrder {
+  id: string
+  userId: string
+  userName: string
+  userEmail: string
+  serviceId: string
+  service: Service
+  description: string
+  scheduledDate?: Date
+  status: "requested" | "analyzing" | "approved" | "in_progress" | "completed" | "cancelled"
+  priority: "low" | "medium" | "high"
+  estimatedCost?: number
+  finalCost?: number
+  notes?: string
+  adminNotes?: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ServiceOrderStatus {
+  status: ServiceOrder["status"]
+  label: string
+  description: string
+  timestamp: Date
+}
+
+export type MessageType = "text" | "order" | "service" | "deal" | "coupon"
+
+export interface ChatMessage {
+  id: string
+  conversationId: string
+  senderId: string
+  senderName: string
+  senderRole: "admin" | "user"
+  message: string
+  messageType: MessageType
+  imageUrl?: string
+  // Dados específicos para cada tipo de mensagem
+  orderData?: {
+    orderId: string
+    status: Order["status"]
+    total: number
+  }
+  serviceData?: {
+    serviceId: string
+    serviceName: string
+    status: string
+  }
+  dealData?: {
+    dealId: string
+    productName: string
+    discountPercentage: number
+    originalPrice: number
+    discountedPrice: number
+  }
+  couponData?: {
+    couponId: string
+    code: string
+    discountType: "percentage" | "fixed"
+    discountValue: number
+    expiresAt: Date
+  }
+  isRead: boolean
+  createdAt: Date
+}
+
+export interface Conversation {
+  id: string
+  userId: string
+  userName: string
+  userEmail: string
+  lastMessage?: string
+  lastMessageAt: Date
+  unreadCount: number
+  createdAt: Date
 }

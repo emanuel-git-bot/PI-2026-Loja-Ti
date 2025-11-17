@@ -66,12 +66,12 @@ export default function CarrinhoPage() {
 
   if (cart.items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
-            <ShoppingBag className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Seu carrinho está vazio</h1>
-            <p className="text-gray-600 mb-8">Adicione alguns produtos incríveis ao seu carrinho!</p>
+            <ShoppingBag className="h-24 w-24 text-gray-300 dark:text-gray-600 mx-auto mb-6" />
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Seu carrinho está vazio</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">Adicione alguns produtos incríveis ao seu carrinho!</p>
             <Link href="/loja/produtos">
               <Button size="lg">
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -85,15 +85,18 @@ export default function CarrinhoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Link href="/loja/produtos" className="inline-flex items-center text-blue-600 hover:text-blue-700">
+          <Link
+            href="/loja/produtos"
+            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Continuar Comprando
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mt-4">Carrinho de Compras</h1>
-          <p className="text-gray-600">Revise seus itens antes de finalizar o pedido</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4">Carrinho de Compras</h1>
+          <p className="text-gray-600 dark:text-gray-400">Revise seus itens antes de finalizar o pedido</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -112,12 +115,14 @@ export default function CarrinhoPage() {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-900 truncate">{item.product.name}</h3>
-                      <p className="text-sm text-gray-500 mt-1">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                        {item.product.name}
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                         {item.product.barcode && `Código: ${item.product.barcode}`}
                       </p>
-                      <p className="text-lg font-bold text-green-600 mt-2">
-                        R$ {item.product.price.toFixed(2).replace(".", ",")}
+                      <p className="text-lg font-bold text-green-600 dark:text-green-400 mt-2">
+                        R$ {(item.product.price ?? 0).toFixed(2).replace(".", ",")}
                       </p>
                     </div>
 
@@ -149,14 +154,14 @@ export default function CarrinhoPage() {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-lg font-bold text-gray-900">
-                        R$ {(item.product.price * item.quantity).toFixed(2).replace(".", ",")}
+                      <p className="text-lg font-bold text-gray-900 dark:text-white">
+                        R$ {((item.product.price ?? 0) * item.quantity).toFixed(2).replace(".", ",")}
                       </p>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => removeFromCart(item.productId)}
-                        className="text-red-600 hover:text-red-700 mt-2"
+                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 mt-2"
                       >
                         <Trash2 className="h-4 w-4 mr-1" />
                         Remover
@@ -208,26 +213,26 @@ export default function CarrinhoPage() {
                   <span>
                     Subtotal ({cart.itemCount} {cart.itemCount === 1 ? "item" : "itens"})
                   </span>
-                  <span>R$ {totalPrice.toFixed(2).replace(".", ",")}</span>
+                  <span>R$ {(totalPrice ?? 0).toFixed(2).replace(".", ",")}</span>
                 </div>
 
                 {appliedCoupon && (
-                  <div className="flex justify-between text-green-600">
+                  <div className="flex justify-between text-green-600 dark:text-green-400">
                     <span>Desconto ({appliedCoupon.code})</span>
-                    <span>- R$ {discount.toFixed(2).replace(".", ",")}</span>
+                    <span>- R$ {(discount ?? 0).toFixed(2).replace(".", ",")}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between">
                   <span>Frete</span>
-                  <span className="text-green-600">Grátis</span>
+                  <span className="text-green-600 dark:text-green-400">Grátis</span>
                 </div>
 
                 <Separator />
 
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span>R$ {finalPrice.toFixed(2).replace(".", ",")}</span>
+                  <span>R$ {(finalPrice ?? 0).toFixed(2).replace(".", ",")}</span>
                 </div>
 
                 <Link href="/loja/checkout">
@@ -240,7 +245,7 @@ export default function CarrinhoPage() {
                   Limpar Carrinho
                 </Button>
 
-                <div className="text-xs text-gray-500 text-center mt-4">
+                <div className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
                   <p>🔒 Compra segura e protegida</p>
                   <p>📞 Suporte: (11) 9999-9999</p>
                 </div>
