@@ -6,6 +6,7 @@ import "./globals.css"
 import { AuthProvider } from "@/contexts/auth-context"
 import { CartProvider } from "@/contexts/cart-context"
 import { FavoritesProvider } from "@/contexts/favorites-context"
+import { ThemeInitializer } from "@/components/theme-initializer"
 
 export const metadata: Metadata = {
   title: "TechStore - Loja de Informática",
@@ -28,8 +29,24 @@ html {
   --font-mono: ${GeistMono.variable};
 }
         `}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedTheme = localStorage.getItem('theme');
+                  const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
       <body>
+        <ThemeInitializer />
         <AuthProvider>
           <CartProvider>
             <FavoritesProvider>{children}</FavoritesProvider>
