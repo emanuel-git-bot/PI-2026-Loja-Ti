@@ -10,7 +10,7 @@ import { DealsSection } from "@/components/deals-section"
 import { PromotionalBanners } from "@/components/promotional-banners"
 import { EnhancedServicesSection } from "@/components/enhanced-services-section"
 import { useProducts } from "@/hooks/use-products"
-import { ArrowRight, Shield, Truck, Headphones, Star, TrendingUp, Gift, Mail } from "lucide-react"
+import { ArrowRight, Shield, Truck, Headphones, Star, TrendingUp, Gift, Mail } from 'lucide-react'
 
 export default function LojaHomePage() {
   const { products, categories } = useProducts()
@@ -90,7 +90,7 @@ export default function LojaHomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {bestSellers.map((product, index) => (
               <div key={product.id} className="relative">
                 {index === 0 && (
@@ -126,7 +126,7 @@ export default function LojaHomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} categoryName={getCategoryName(product.categoryId)} />
             ))}

@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card"
 import { ProductCard } from "@/components/product-card"
 import { useProducts } from "@/hooks/use-products"
-import { Search } from "lucide-react"
+import { Search } from 'lucide-react'
 
 export default function ProdutosPage() {
   const { products, categories } = useProducts()
@@ -62,7 +62,7 @@ export default function ProdutosPage() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} categoryName={getCategoryName(product.categoryId)} />
           ))}
