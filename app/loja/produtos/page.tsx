@@ -5,11 +5,14 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { ProductCard } from "@/components/product-card"
+import { MobileGridControl } from "@/components/mobile-grid-control"
+import { useMobileGridColumns } from "@/hooks/use-mobile-grid-columns"
 import { useProducts } from "@/hooks/use-products"
 import { Search } from 'lucide-react'
 
 export default function ProdutosPage() {
   const { products, categories } = useProducts()
+  const { gridClass } = useMobileGridColumns()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
 
@@ -62,7 +65,7 @@ export default function ProdutosPage() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={`grid ${gridClass} md:grid-cols-2 lg:grid-cols-3 gap-6`}>
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} categoryName={getCategoryName(product.categoryId)} />
           ))}
@@ -80,6 +83,8 @@ export default function ProdutosPage() {
           </Card>
         )}
       </div>
+
+      <MobileGridControl />
     </div>
   )
 }

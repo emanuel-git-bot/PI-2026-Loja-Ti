@@ -9,11 +9,14 @@ import { CategoryGrid } from "@/components/category-grid"
 import { DealsSection } from "@/components/deals-section"
 import { PromotionalBanners } from "@/components/promotional-banners"
 import { EnhancedServicesSection } from "@/components/enhanced-services-section"
+import { MobileGridControl } from "@/components/mobile-grid-control"
+import { useMobileGridColumns } from "@/hooks/use-mobile-grid-columns"
 import { useProducts } from "@/hooks/use-products"
 import { ArrowRight, Shield, Truck, Headphones, Star, TrendingUp, Gift, Mail } from 'lucide-react'
 
 export default function LojaHomePage() {
   const { products, categories } = useProducts()
+  const { gridClass } = useMobileGridColumns()
 
   const featuredProducts = products.filter((product) => product.inStock).slice(0, 8)
   const bestSellers = products.filter((product) => product.inStock).slice(2, 6)
@@ -90,7 +93,7 @@ export default function LojaHomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`grid ${gridClass} md:grid-cols-2 lg:grid-cols-4 gap-6`}>
             {bestSellers.map((product, index) => (
               <div key={product.id} className="relative">
                 {index === 0 && (
@@ -126,7 +129,7 @@ export default function LojaHomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`grid ${gridClass} md:grid-cols-2 lg:grid-cols-4 gap-6`}>
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} categoryName={getCategoryName(product.categoryId)} />
             ))}
@@ -163,6 +166,8 @@ export default function LojaHomePage() {
           </div>
         </div>
       </section>
+
+      <MobileGridControl />
     </div>
   )
 }
