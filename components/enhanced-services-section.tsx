@@ -113,6 +113,11 @@ export function EnhancedServicesSection() {
     }
   }
 
+  const handleViewAllServices = () => {
+    const mensagem = "Gostaria de mais informações sobre os serviços e produtos disponíveis na loja. Podem me enviar um catálogo completo e informações sobre descontos?"
+    router.push(`/loja/contato?assunto=Informações sobre Produtos e Serviços&mensagem=${encodeURIComponent(mensagem)}`)
+  }
+
   return (
     <section className="relative py-16 overflow-hidden">
       {/* Background Image with Overlay */}
@@ -152,12 +157,10 @@ export function EnhancedServicesSection() {
               Nossa equipe está pronta para atender suas necessidades específicas com soluções sob medida
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/loja/servicos">
-                <Button size="lg" className="min-w-[200px]">
-                  Ver Todos os Serviços
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
+              <Button size="lg" className="min-w-[200px]" onClick={handleViewAllServices}>
+                Ver Detalhes
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
               <Button
                 size="lg"
                 variant="outline"
